@@ -12,6 +12,7 @@ import './details-page.css';
 function DetailsPage() {
   const {id} = useParams();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [overview, setOverview] = useState(null);
   const [priceData, setPriceData] = useState(null);
   const getContent = useContent();
@@ -27,7 +28,10 @@ function DetailsPage() {
         getPriceData(id).catch(() => null)
       ]);
 
-      console.log(priceData);
+      if(!overview || !priceData || !priceData.dataPoints) {
+        // We have ourselves an error.
+        return setError('API_ERROR');
+      }
       
       overview && setOverview(overview);
       priceData && setPriceData(priceData);
@@ -67,6 +71,7 @@ function DetailsPage() {
       </div>
       <hr />
       {loading && <LoadingSkeletion />}
+      {error && <p>API call failed. Please refresh the page to retry.</p>}
       {!loading && overview && 
         <>
           <div className="details-page-title">

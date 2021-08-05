@@ -64,7 +64,7 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
   }, [idx]);
 
   const openDropdown = useCallback(() => setDropdownOpen(true), []);
-  const closeDropdown = useCallback(() => setDropdownOpen(false), []);
+  const closeDropdown = useCallback(() => setTimeout(() => setDropdownOpen(false), 250), []);
 
   const onChange = useCallback((e) => {
     const val = e.target.value;
@@ -116,6 +116,7 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
         break;
       case 'Enter':
         navigate();
+        closeDropdown();
     }
   }, [
     closeDropdown,
