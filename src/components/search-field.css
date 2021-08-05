@@ -1,0 +1,28 @@
+.stocks-tracker-search-field {
+  display: flex;
+  width: 100%;
+}
+
+.stocks-tracker-search-field .input-container {
+  position: relative;
+}
+
+.stocks-tracker-search-field:not(.compact) {
+  flex-direction: column;
+}
+
+.stocks-tracker-search-field:not(.compact) .button-container {
+  text-align: center;
+}
+
+.stocks-tracker-search-field:not(.compact) button {
+  margin-top: 20px;
+}
+
+.stocks-tracker-search-field.compact .input-container {
+  flex-grow: 1;
+}
+
+.stocks-tracker-search-field.compact button {
+  margin-left: 20px;
+}

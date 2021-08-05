@@ -1,0 +1,29 @@
+.suggestion-dropdown {
+  position: absolute;
+  top: 37px;
+  left: 0;
+  right: 0;
+  
+  list-style: none;
+  background-color: white;
+  padding: 10px 12px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+.suggestion-dropdown li {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.suggestion-dropdown li.selected {
+  margin-left: -12px;
+  margin-right: -12px;
+  padding: 10px 12px;
+  background-color: #f1f1f1;
+}
+
+.suggestion-dropdown li p {
+  margin: 0;
+}
