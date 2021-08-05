@@ -67,18 +67,23 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
   const closeDropdown = useCallback(() => setDropdownOpen(false), []);
 
   const onChange = useCallback((e) => {
-    setValue(e.target.value);
+    const val = e.target.value;
+    setValue(val);
 
-    // deboune
     if(timer.current) {
       clearTimeout(timer.current);
     }
 
+    if(val === '') {
+      return setSearchResults([]);
+    }
+
+    // deboune
     timer.current = setTimeout(async () => {
       timer.current = null;
       const reqTime = Date.now();
       
-      const { bestMatches } = await (search(e.target.value).catch(() => DUMMY_RESP));
+      const { bestMatches } = await (search(val).catch(() => DUMMY_RESP));
       if(latest.current < reqTime) {
         latest.current = reqTime;
         setSearchResults(bestMatches);

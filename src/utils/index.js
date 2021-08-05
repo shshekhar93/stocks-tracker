@@ -21,7 +21,34 @@ function getFormatter(currencyCode) {
   });
 }
 
+function renderChart(elemId, data) {
+  data = Object.keys(data).map(key => [new Date(key).getTime(), +data[key]['4. close']])
+  window.Highcharts.chart(elemId, {
+    chart: {
+      zoomType: 'x'
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      type: 'datetime'
+    },
+    yAxis: {
+      title: {
+        text: 'Stock price'
+      }
+    },
+    legend: {
+      enabled: false
+    },
+    series: [{
+      data
+    }]
+  });
+}
+
 export {
   searchResultMapper,
-  getFormatter
+  getFormatter,
+  renderChart
 };

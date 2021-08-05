@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router';
 import SearchField from '../components/search-field';
-import { getFormatter } from '../utils';
+import { getFormatter, renderChart } from '../utils';
 import { getDetails, getPriceData, search } from '../utils/API';
 import { ContentKeys } from '../utils/constants';
 import { useContent } from '../utils/content';
@@ -31,6 +31,7 @@ function DetailsPage() {
       
       overview && setOverview(overview);
       priceData && setPriceData(priceData);
+      priceData && setTimeout(() => renderChart('chart-container', priceData.dataPoints), 100);
 
       setLoading(false);
     })();
@@ -56,11 +57,14 @@ function DetailsPage() {
 
   return (
     <div className="container details-page">
-      <SearchField
-        defaultValue={id}
-        compact={true}
-        search={search}
-        placeholder={getContent(ContentKeys.SEARCH_PLACEHOLDER)} />
+      <div className="d-flex">
+        <p className="details-page-brandname">{getContent(ContentKeys.SEARCH_PAGE_TITLE)}</p>
+        <SearchField
+          defaultValue={id}
+          compact={true}
+          search={search}
+          placeholder={getContent(ContentKeys.SEARCH_PLACEHOLDER)} />
+      </div>
       <hr />
       {loading && <LoadingSkeletion />}
       {!loading && overview && 
@@ -94,6 +98,7 @@ function DetailsPage() {
               </div>
             </div>
           </div>
+          <div id="chart-container"></div>
         </>
       }
     </div>
