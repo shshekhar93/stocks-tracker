@@ -1,7 +1,13 @@
 import './App.css';
 import { ContentContext } from './utils/content';
 import { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 import SearchPage from './pages/search-page';
+import DetailsPage from './pages/details-page';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -44,7 +50,18 @@ function App() {
   return (
     <div className="App">
       <ContentContext.Provider value={content}>
-        <SearchPage />
+        <Router>
+          <Switch>
+            <Route path="/symbol/:id">
+              <DetailsPage />
+            </Route>
+            <Route path="/">
+              <SearchPage />
+            </Route>
+          </Switch>
+          
+        </Router>
+        
       </ContentContext.Provider>
     </div>
   );

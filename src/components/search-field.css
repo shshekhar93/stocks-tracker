@@ -26,3 +26,7 @@
 .stocks-tracker-search-field.compact button {
   margin-left: 20px;
 }
+
+.company-name {
+  padding-left: 15px;
+}

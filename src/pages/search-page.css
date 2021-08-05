@@ -1,6 +1,11 @@
 .search-page {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  padding-top: 20vh;
+  min-height: 100vh;
+}
+
+.page-title {
+  margin-bottom: 2rem;
 }

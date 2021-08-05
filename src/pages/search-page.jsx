@@ -11,6 +11,7 @@ function SearchPage() {
 
   return (
     <div className="container search-page">
+      <h1 className="page-title display-4">{getContent(ContentKeys.SEARCH_PAGE_TITLE)}</h1>
       <SearchField
         search={search}
         placeholder={getContent(ContentKeys.SEARCH_PLACEHOLDER)} />

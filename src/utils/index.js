@@ -10,6 +10,18 @@ function searchResultMapper(resultItem, symbolWidth) {
   )
 }
 
+function getFormatter(currencyCode) {
+  if(!currencyCode) {
+    return new Intl.NumberFormat();
+  }
+
+  return new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: currencyCode
+  });
+}
+
 export {
-  searchResultMapper
+  searchResultMapper,
+  getFormatter
 };

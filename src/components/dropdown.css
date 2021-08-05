@@ -9,6 +9,7 @@
   padding: 10px 12px;
   border: 1px solid lightgray;
   border-radius: 5px;
+  z-index: 9;
 }
 
 .suggestion-dropdown li {

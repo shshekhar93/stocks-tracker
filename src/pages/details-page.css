@@ -1,0 +1,26 @@
+.details-page {
+  padding-top: 1rem;
+  min-height: 100vh;
+}
+
+.details-page-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.overview-table {
+  width: 100%;
+}
+
+.overview-table .row {
+  margin-bottom: 10px;
+}
+
+.overview-label {
+  white-space: nowrap;
+  padding-right: 20px;
+}
+
+.overview-value {
+  width: 100%;
+}

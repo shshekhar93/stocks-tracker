@@ -1,10 +1,15 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router';
 import classnames from 'classnames';
 import { searchResultMapper } from '../utils';
+import { ContentKeys } from '../utils/constants';
+import { useContent } from '../utils/content';
 
 import './search-field.css';
 import './dropdown.css';
+
+const DUMMY_RESP = { bestMatches: [] };
 
 function SearchField({ defaultValue, placeholder, compact, search }) {
   const [ value, setValue ] = useState(() => (defaultValue || ''));
@@ -15,10 +20,23 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
   const dropdownRef = useRef(null);
   const timer = useRef(null);
   const latest = useRef(0);
+  const getContent = useContent();
+  const history = useHistory();
+
+
   const classes = classnames({
     'stocks-tracker-search-field': true,
     compact
   });
+
+  useEffect(() => {
+    if(defaultValue) {
+      (async () => {
+        setSearchResults((await search(defaultValue).catch(() => DUMMY_RESP)).bestMatches);
+      })();
+      
+    }
+  }, [])
 
   useEffect(() => {
     if(!dropdownRef.current) {
@@ -33,8 +51,8 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
       return Math.max(maxWidth, symbol.offsetWidth);
     }, 0);
 
-    setSymbolWidth(maxWidth + 15);
-  }, [ searchResults ]);
+    setSymbolWidth(maxWidth);
+  }, [ searchResults, dropdownOpen ]);
 
   useEffect(() => {
     if(idx === -1 || !searchResults[idx]) {
@@ -45,8 +63,8 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
     setValue(symbol);
   }, [idx]);
 
-  const openDropdown = useCallback(() => setDropdownOpen(true));
-  const closeDropdown = useCallback(() => setDropdownOpen(false));
+  const openDropdown = useCallback(() => setDropdownOpen(true), []);
+  const closeDropdown = useCallback(() => setDropdownOpen(false), []);
 
   const onChange = useCallback((e) => {
     setValue(e.target.value);
@@ -60,7 +78,7 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
       timer.current = null;
       const reqTime = Date.now();
       
-      const { bestMatches } = await (search(e.target.value).catch(() => ({ bestMatches: [] })));
+      const { bestMatches } = await (search(e.target.value).catch(() => DUMMY_RESP));
       if(latest.current < reqTime) {
         latest.current = reqTime;
         setSearchResults(bestMatches);
@@ -68,6 +86,10 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
       }
     }, 300);
   }, [ search, idx ]);
+
+  const navigate = useCallback(() => {
+    history.push(`/symbol/${value}`);
+  }, [value]);
 
   const onKeyDown = useCallback((e) => {
     switch(e.key) {
@@ -87,9 +109,12 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
         setIdx(idx => idx === -1 ? searchResults.length - 1 : (idx - 1 + searchResults.length) % searchResults.length);
         e.preventDefault();
         break;
+      case 'Enter':
+        navigate();
     }
   }, [
     closeDropdown,
+    navigate,
     searchResults
   ]);
 
@@ -104,37 +129,41 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
           onKeyDown={onKeyDown}
           onFocus={openDropdown}
           onClick={openDropdown}
-          onBlur={closeDropdown} />
+          onBlur={closeDropdown}
+          aria-haspopup="listbox"
+          aria-expanded={!!value.length && dropdownOpen}
+          aria-controls="suggestions-dropdown" />
         {!!value.length && dropdownOpen &&
-          getDropdown(searchResults, symbolWidth, searchResultMapper, idx, dropdownRef)
+          getDropdown(searchResults, symbolWidth, searchResultMapper, idx, dropdownRef, getContent, !compact, navigate)
         }
       </div>
       <div className="button-container">
-        <button className="btn btn-primary">Search</button>
+        <button className="btn btn-primary" onClick={navigate}>{getContent(ContentKeys.SEARCH_LABEL)}</button>
       </div>
     </div>
   );
 }
 
-function getDropdown(options, symbolWidth, mapper, idx, dropdownRef, onSelect) {
-
+function getDropdown(options, symbolWidth, mapper, idx, dropdownRef, getContent, showButton, onClick) {
   if(!options.length) {
     return (
-      <p className="suggestion-dropdown">No results found.</p>
+      <p id="suggestions-dropdown" className="suggestion-dropdown">{getContent(ContentKeys.NO_RESULTS)}</p>
     );
   }
 
   return (
-    <ul className="suggestion-dropdown" ref={dropdownRef}>
+    <ul id="suggestions-dropdown" className="suggestion-dropdown" ref={dropdownRef}>
       {
         options.map((item, i) => 
-          <li key={i} className={classnames({ selected: i === idx })}>{
+          <li key={i} className={classnames({ selected: i === idx })} onClick={onClick}>{
             mapper(item, symbolWidth)
           }</li>)
       }
-      <li style={{ justifyContent: 'center' }}>
-        <button className="btn btn-primary" style={{ margin: 0 }}>Search</button>
-      </li>
+      {showButton &&
+        <li style={{ justifyContent: 'center' }}>
+          <button className="btn btn-primary" style={{ margin: 0 }} tabIndex="-1">{getContent(ContentKeys.SEARCH_LABEL)}</button>
+        </li>
+      }
     </ul>
   );
 }

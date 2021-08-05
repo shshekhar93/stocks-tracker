@@ -1,4 +1,7 @@
 {
     "loading": "Loading...",
-    "searchPlaceholder": "Enter ticker symbol..."
+    "searchPageTitle": "Stocks tracker",
+    "searchPlaceholder": "Enter ticker symbol...",
+    "noResults": "No results found.",
+    "searchLabel": "Search"
 }

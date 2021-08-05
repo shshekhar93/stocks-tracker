@@ -5,7 +5,7 @@ const ContentContext = React.createContext({});
 function useContent() {
     const content = useContext(ContentContext);
     return (key) => (
-        content[key] || `☃ key ☃`
+        content[key] || `☃${key}☃`
     );
 }
 
