@@ -93,7 +93,7 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
   }, [ search ]);
 
   const navigate = useCallback((e) => {
-    const val = e.currentTarget.getAttribute('data-value');
+    const val = e && e.currentTarget.getAttribute('data-value');
     history.push(`/symbol/${val || value}`);
   }, [value, history]);
 
