@@ -1,0 +1,7 @@
+- Map API responses to a common format before using in views.
+- Better localization, some of the text was not externalized, it should be fixed.
+- The API secret should not be exposed on client side. Requires building a proxy service.
+- Accessibility testing.
+- UAT
+- Aplha/Beta testing
+- Go live
