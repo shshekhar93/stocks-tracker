@@ -20,6 +20,9 @@ function DetailsPage() {
   useEffect(() => {
     (async () => {
       setLoading(true);
+      setError('');
+      setOverview(null);
+      setPriceData(null);
       const [
         overview,
         priceData
@@ -72,7 +75,7 @@ function DetailsPage() {
       </div>
       <hr />
       {loading && <LoadingSkeletion />}
-      {error && <p>No data found. Please check the symbol.</p>}
+      {error && <p class="alert alert-danger" role="alert">Data not available. Please check the symbol.</p>}
       {!loading && overview && 
         <>
           <div className="details-page-title">

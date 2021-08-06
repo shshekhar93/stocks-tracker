@@ -92,8 +92,9 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
     }, 300);
   }, [ search, idx ]);
 
-  const navigate = useCallback(() => {
-    history.push(`/symbol/${value}`);
+  const navigate = useCallback((e) => {
+    const val = e.currentTarget.getAttribute('data-value');
+    history.push(`/symbol/${val || value}`);
   }, [value]);
 
   const onKeyDown = useCallback((e) => {
@@ -137,7 +138,6 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
           onClick={openDropdown}
           onBlur={closeDropdown}
           aria-haspopup="listbox"
-          aria-expanded={!!value.length && dropdownOpen}
           aria-controls="suggestions-dropdown" />
         {!!value.length && dropdownOpen &&
           getDropdown(searchResults, symbolWidth, searchResultMapper, idx, dropdownRef, getContent, !compact, navigate)
@@ -161,7 +161,11 @@ function getDropdown(options, symbolWidth, mapper, idx, dropdownRef, getContent,
     <ul id="suggestions-dropdown" className="suggestion-dropdown" ref={dropdownRef}>
       {
         options.map((item, i) => 
-          <li key={i} className={classnames({ selected: i === idx })} onClick={onClick}>{
+          <li 
+            key={i} 
+            className={classnames({ selected: i === idx })} 
+            onClick={onClick} 
+            data-value={item['1. symbol']}>{
             mapper(item, symbolWidth)
           }</li>)
       }
