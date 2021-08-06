@@ -51,7 +51,7 @@ function DetailsPage() {
     }
     const formatter = new Intl.NumberFormat(undefined, {style: 'currency', currency: overview.Currency});
     return formatter.format(overview.MarketCapitalization || 0);
-  }, [overview && overview.MarketCapitalization]);
+  }, [overview]);
 
   const curPrice = useMemo(() => {
     if(!priceData || !priceData.dataPoints || priceData.dataPoints.length === 0) {
@@ -61,7 +61,7 @@ function DetailsPage() {
     const latestKey = Object.keys(priceData.dataPoints).pop();
     const latestPrice = priceData.dataPoints[latestKey]['4. close'];
     return getFormatter(overview && overview.Currency).format(latestPrice);
-  }, [priceData]);
+  }, [priceData, overview]);
 
   return (
     <div className="container details-page">

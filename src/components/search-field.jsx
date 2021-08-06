@@ -90,12 +90,12 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
         setIdx(idx => idx >= bestMatches.length ? bestMatches.length - 1 : idx);
       }
     }, 300);
-  }, [ search, idx ]);
+  }, [ search ]);
 
   const navigate = useCallback((e) => {
     const val = e.currentTarget.getAttribute('data-value');
     history.push(`/symbol/${val || value}`);
-  }, [value]);
+  }, [value, history]);
 
   const onKeyDown = useCallback((e) => {
     switch(e.key) {
@@ -118,6 +118,9 @@ function SearchField({ defaultValue, placeholder, compact, search }) {
       case 'Enter':
         navigate();
         closeDropdown();
+        break;
+      default:
+        break;
     }
   }, [
     closeDropdown,
