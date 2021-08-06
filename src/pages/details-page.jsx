@@ -30,6 +30,7 @@ function DetailsPage() {
 
       if(!overview || !priceData || !priceData.dataPoints) {
         // We have ourselves an error.
+        setLoading(false);
         return setError('API_ERROR');
       }
       
@@ -71,7 +72,7 @@ function DetailsPage() {
       </div>
       <hr />
       {loading && <LoadingSkeletion />}
-      {error && <p>API call failed. Please refresh the page to retry.</p>}
+      {error && <p>No data found. Please check the symbol.</p>}
       {!loading && overview && 
         <>
           <div className="details-page-title">
