@@ -77,7 +77,7 @@ function DetailsPage() {
       {loading && <LoadingSkeletion />}
       {error && <p class="alert alert-danger" role="alert">Data not available. Please check the symbol.</p>}
       {!loading && overview && 
-        <>
+        <section role="main">
           <div className="details-page-title">
             <h1>{overview.Name}</h1>
             <h1>{curPrice}</h1>
@@ -108,7 +108,7 @@ function DetailsPage() {
             </div>
           </div>
           <div id="chart-container"></div>
-        </>
+        </section>
       }
     </div>
   );
